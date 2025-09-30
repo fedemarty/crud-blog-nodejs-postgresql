@@ -1,0 +1,74 @@
+name: CI Pipeline
+
+# Ejecuta el pipeline en push a main y pull requests
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  ci:
+    name: CI - Test, Build & Docker
+    runs-on: ubuntu-latest
+    
+    steps:
+    # 1. Checkout del código
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+      
+    # 2. Configurar Node.js
+    - name: 📦 Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+    
+    # 3. INSTALACIÓN DE DEPENDENCIAS
+    - name: 📋 Install Dependencies
+      run: npm ci
+    
+    # 4. ANÁLISIS ESTÁTICO / LINTER (TypeScript check)
+    - name: 🔍 TypeScript Static Analysis
+      run: npx tsc --noEmit
+    
+    # 5. EJECUCIÓN DE PRUEBAS UNITARIAS
+    - name: 🧪 Run Unit Tests
+      run: npm test
+    
+    # 6. COMPILACIÓN/BUILD
+    - name: 🏗️ Build Application
+      run: npm run build
+    
+    # 7. CONSTRUCCIÓN DE IMAGEN DOCKER
+    - name: 🐳 Build Docker Image
+      run: docker build -t blog-api:${{ github.sha }} .
+    
+    # 8. LOGIN A DOCKER HUB (solo en push a main)
+    - name: 🔐 Login to Docker Hub
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+    
+    # 9. PUBLICACIÓN DE IMAGEN DOCKER (solo en push a main)
+    - name: 🚀 Push Docker Image
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      run: |
+        docker tag blog-api:${{ github.sha }} ${{ secrets.DOCKER_USERNAME }}/blog-api:latest
+        docker tag blog-api:${{ github.sha }} ${{ secrets.DOCKER_USERNAME }}/blog-api:${{ github.sha }}
+        docker push ${{ secrets.DOCKER_USERNAME }}/blog-api:latest
+        docker push ${{ secrets.DOCKER_USERNAME }}/blog-api:${{ github.sha }}
+    
+    # 10. Resumen del pipeline
+    - name: ✅ Pipeline Summary
+      run: |
+        echo "✅ Dependencies installed successfully"
+        echo "✅ TypeScript analysis passed"
+        echo "✅ All tests passed"
+        echo "✅ Build completed successfully"
+        echo "✅ Docker image built successfully"
+        if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/main" ]]; then
+          echo "✅ Docker image pushed to registry"
+        fi
