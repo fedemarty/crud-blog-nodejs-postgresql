@@ -208,3 +208,4 @@ Ver [SETUP-CI.md](SETUP-CI.md) para instrucciones de configuración de Docker Hu
 ## 📄 Licencia
 
 Este proyecto está bajo la Licencia MIT.
+# CI/CD Pipeline with Docker Hub integration
