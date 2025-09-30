@@ -22,11 +22,11 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: '20'
-        cache: 'npm'
+        cache: 'yarn'
     
     # 3. INSTALACIÓN DE DEPENDENCIAS
     - name: 📋 Install Dependencies
-      run: npm ci
+      run: yarn install --frozen-lockfile
     
     # 4. ANÁLISIS ESTÁTICO / LINTER (TypeScript check)
     - name: 🔍 TypeScript Static Analysis
@@ -34,11 +34,11 @@ jobs:
     
     # 5. EJECUCIÓN DE PRUEBAS UNITARIAS
     - name: 🧪 Run Unit Tests
-      run: npm test
+      run: yarn test
     
     # 6. COMPILACIÓN/BUILD
     - name: 🏗️ Build Application
-      run: npm run build
+      run: yarn build
     
     # 7. CONSTRUCCIÓN DE IMAGEN DOCKER
     - name: 🐳 Build Docker Image
