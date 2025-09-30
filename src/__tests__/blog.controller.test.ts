@@ -1,4 +1,28 @@
 import { Request, Response } from 'express';
+
+// Mock the db module before importing controllers
+jest.mock('../db', () => ({
+  sequelize: {
+    define: jest.fn().mockReturnValue({
+      create: jest.fn(),
+      update: jest.fn(),
+      findByPk: jest.fn(),
+      findAll: jest.fn(),
+      destroy: jest.fn(),
+    }),
+  },
+  DataTypes: {
+    UUID: 'UUID',
+    UUIDV4: 'UUIDV4',
+    STRING: jest.fn().mockReturnValue('STRING'),
+    TEXT: 'TEXT',
+    BOOLEAN: 'BOOLEAN',
+  },
+}));
+
+// Mock del modelo BlogModel
+jest.mock('../model/model');
+
 import {
   createBlogController,
   updateBlogController,
@@ -7,9 +31,6 @@ import {
   deleteBlogController,
 } from '../controller/blog.controller';
 import BlogModel from '../model/model';
-
-// Mock del modelo BlogModel
-jest.mock('../model/model');
 const mockedBlogModel = BlogModel as jest.Mocked<typeof BlogModel>;
 
 // Helper para crear mock de Request y Response
