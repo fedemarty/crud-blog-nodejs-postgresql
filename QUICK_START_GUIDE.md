@@ -21,8 +21,10 @@ cd crud-blog-nodejs-postgresql
 # 2. Instalar dependencias
 yarn install
 
-# 3. Configurar variables (editar con tus datos)
-cp .env.example .env
+# 3. Configurar variables (crear .env con tus datos)
+# En Windows: copy .env.example .env
+# En Linux/Mac: cp .env.example .env
+# O crear manualmente el archivo .env
 ```
 
 ### `.env` - **CONFIGURACIÓN MÍNIMA:**
@@ -61,6 +63,12 @@ yarn test
 yarn dev
 
 # Verificar funcionamiento
+
+# Windows PowerShell:
+Invoke-RestMethod -Uri "http://localhost:8081/api/healthchecker" -Method GET
+Invoke-RestMethod -Uri "http://localhost:8081/api/blogs" -Method GET
+
+# Windows CMD / Linux / Mac:
 curl http://localhost:8081/api/healthchecker
 curl http://localhost:8081/api/blogs
 ```
@@ -69,7 +77,7 @@ curl http://localhost:8081/api/blogs
 
 ## 🐳 **PASO 4: DOCKER**
 ```bash
-# Build y run con Docker
+# Construir y ejecutar con Docker
 docker-compose up --build -d
 
 # Verificar container
@@ -133,8 +141,25 @@ docker-compose up --build -d
 ```
 
 ### **4. Generar Tráfico:**
+
+**Windows PowerShell:**
+```powershell
+for ($i=1; $i -le 20; $i++) { 
+  Invoke-RestMethod -Uri "http://localhost:8081/api/blogs" -Method GET
+  Start-Sleep -Seconds 2
+}
+```
+
+**Windows CMD:**
+```cmd
+for /l %i in (1,1,20) do (
+  curl http://localhost:8081/api/blogs
+  timeout /t 2 /nobreak >nul
+)
+```
+
+**Linux/Mac:**
 ```bash
-# Script para generar datos en New Relic
 for i in {1..20}; do
   curl http://localhost:8081/api/blogs
   sleep 2
@@ -191,17 +216,31 @@ docker-compose up --build -d
 ```
 
 ### **❌ New Relic Sin Datos:**
+
+**Verificar configuración:**
 ```bash
 # Verificar license key
 docker exec blog_api env | grep NEW_RELIC
 
 # Verificar logs
 docker exec blog_api cat newrelic_agent.log
+```
 
-# Generar más tráfico
-curl -X POST http://localhost:8081/api/blogs \
-  -H "Content-Type: application/json" \
-  -d '{"title":"Test Blog","description":"Testing New Relic","category":"test"}'
+**Generar más tráfico (Windows PowerShell):**
+```powershell
+$body = @{
+  title = "Test Blog"
+  description = "Probando New Relic" 
+  category = "test"
+} | ConvertTo-Json
+Invoke-RestMethod -Uri "http://localhost:8081/api/blogs" -Method POST -Body $body -ContentType "application/json"
+```
+
+**Generar más tráfico (Windows CMD):**
+```cmd
+curl -X POST http://localhost:8081/api/blogs ^
+  -H "Content-Type: application/json" ^
+  -d "{\"title\":\"Blog de Prueba\",\"description\":\"Probando New Relic\",\"category\":\"pruebas\"}"
 ```
 
 ### **❌ CI/CD Pipeline Failing:**
@@ -211,35 +250,50 @@ curl -X POST http://localhost:8081/api/blogs \
 
 ---
 
-## 🎯 **ENDPOINTS PARA TESTING**
+## 🎯 **ENDPOINTS PARA PRUEBAS**
 
 ### **📝 Crear Blog:**
-```bash
-curl -X POST http://localhost:8081/api/blogs \
-  -H "Content-Type: application/json" \
-  -d '{
-    "title": "Mi Primer Blog",
-    "description": "Descripción del blog",
-    "category": "tecnologia",
-    "published": true
-  }'
+
+**Windows PowerShell:**
+```powershell
+$body = @{
+  title = "Mi Primer Blog"
+  description = "Descripción del blog"
+  category = "tecnologia"
+  published = $true
+} | ConvertTo-Json
+
+Invoke-RestMethod -Uri "http://localhost:8081/api/blogs" -Method POST -Body $body -ContentType "application/json"
+```
+
+**Windows CMD:**
+```cmd
+curl -X POST http://localhost:8081/api/blogs ^
+  -H "Content-Type: application/json" ^
+  -d "{\"title\":\"Mi Primer Blog\",\"description\":\"Descripción del blog\",\"category\":\"tecnologia\",\"published\":true}"
 ```
 
 ### **📖 Obtener Blogs:**
+
+**Windows PowerShell:**
+```powershell
+Invoke-RestMethod -Uri "http://localhost:8081/api/blogs" -Method GET
+```
+
+**Windows CMD / Linux / Mac:**
 ```bash
 curl http://localhost:8081/api/blogs
 ```
 
 ### **📝 Actualizar Blog:**
-```bash
-curl -X PATCH http://localhost:8081/api/blogs/blog-id-aquí \
-  -H "Content-Type: application/json" \
-  -d '{"title": "Título Actualizado"}'
+```powershell
+$body = @{ title = "Título Actualizado" } | ConvertTo-Json
+Invoke-RestMethod -Uri "http://localhost:8081/api/blogs/blog-id-aquí" -Method PATCH -Body $body -ContentType "application/json"
 ```
 
 ### **🗑️ Eliminar Blog:**
-```bash
-curl -X DELETE http://localhost:8081/api/blogs/blog-id-aquí
+```powershell
+Invoke-RestMethod -Uri "http://localhost:8081/api/blogs/blog-id-aquí" -Method DELETE
 ```
 
 ---

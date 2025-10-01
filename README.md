@@ -1,6 +1,21 @@
 # 📝 CRUD Blog API - DevOps Complete Stack
 
-[![CI Pipeline](https://github.com/fedemarty/crud-blog-nodejs-postgresql/actions/workflows/ci.yml/badge.svg)](https://github.com/fedemarty/crud-blog-nodejs-postgresql/actions/workflows/ci.yml)
+[![CI Pipeline](https://github.com/fe## 📋 Endpoints de la API
+
+Estos son los métodos elegidos en Postman que se utilizan para probar los endpoints.
+
+| Método   | Descripción                              |
+| -------- | ---------------------------------------- |
+| `GET`    | Se usa para obtener un elemento individual o una colección de elementos. |
+| `POST`   | Se usa al crear nuevos elementos, ej: un nuevo blog |
+| `PATCH`  | Se usa para actualizar uno o más campos de un elemento, ej: actualizar el título de un blog. |
+| `DELETE` | Se usa para eliminar un elemento.                  |
+
+## Endpoints
+
+Ahora que hemos aprendido sobre la anatomía de nuestros endpoints y los diferentes métodos de solicitud que debemos usar, es hora de algunos ejemplos: 
+
+`URL_BASE: http://localhost:8081`g-nodejs-postgresql/actions/workflows/ci.yml/badge.svg)](https://github.com/fedemarty/crud-blog-nodejs-postgresql/actions/workflows/ci.yml)
 [![New Relic Monitoring](https://img.shields.io/badge/New%20Relic-Monitored-1CE783?style=flat&logo=newrelic&logoColor=white)](https://rpm.newrelic.com)
 [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=flat&logo=docker&logoColor=white)](https://hub.docker.com/)
 
@@ -37,8 +52,8 @@ yarn dev   # http://localhost:8081
 # 4. Docker
 docker-compose up --build -d
 
-# 5. Verificar
-curl http://localhost:8081/api/blogs
+# 5. Verificar (Windows PowerShell)
+Invoke-RestMethod -Uri "http://localhost:8081/api/blogs" -Method GET
 ```
 
 ---
@@ -98,21 +113,21 @@ Now that we’ve learned about the anatomy of our endpoints and the different re
 
 `BASE_URL: http://localhost:8081`
 
-| Method   | URL                                      | Description                              |
+| Método   | URL                                      | Descripción                              |
 | -------- | ---------------------------------------- | ---------------------------------------- |
-| `GET`    | `/api/blogs`                             | Retrieve all blogs.    
-| `GET`    | `/api/blogs/:id`                             | Retrieve a blog.                   |
-| `POST`   | `/api/blogs`                             | Create a new blog.                       |
-| `PATCH`    | `/api/blogs/:id`                          | Update a blog.                    |
-| `DELETE`  | `/api/blogs/:id`                          | Delete a blog.                 |
-| `GET`  | `/api/healthchecker`                          | To test succession of the API.                 |
+| `GET`    | `/api/blogs`                             | Obtener todos los blogs.    
+| `GET`    | `/api/blogs/:id`                             | Obtener un blog específico.                   |
+| `POST`   | `/api/blogs`                             | Crear un nuevo blog.                       |
+| `PATCH`    | `/api/blogs/:id`                          | Actualizar un blog.                    |
+| `DELETE`  | `/api/blogs/:id`                          | Eliminar un blog.                 |
+| `GET`  | `/api/healthchecker`                          | Verificar el estado de la API.                 |
 
-## Technologies
+## Tecnologías
 
-* [Node](https://nodejs.org/en) should be installed on your PC. 
-* [PostgreSQL](https://www.postgresql.org/download/) needs to be installed and running.
-* [Docker](https://www.docker.com/) should be installed and Makefile is in the repository folder to create compose docker.
-* [Postman](https://www.postman.com/) to perform CRUD operations on the backend database.
+* [Node](https://nodejs.org/en) debe estar instalado en tu PC. 
+* [PostgreSQL](https://www.postgresql.org/download/) debe estar instalado y ejecutándose.
+* [Docker](https://www.docker.com/) debe estar instalado. El Makefile está en la carpeta del repositorio para crear el compose de docker.
+* [Postman](https://www.postman.com/) para realizar operaciones CRUD en la base de datos del backend.
 
 ## ⚙️ Instalación y Configuración
 
@@ -124,8 +139,6 @@ cd crud-blog-nodejs-postgresql
 
 ### 2. Instalar dependencias
 ```bash
-npm install
-# o
 yarn install
 ```
 
@@ -143,17 +156,15 @@ NODE_ENV=development
 
 ### 4. Ejecutar la aplicación
 
-#### Modo Desarrollo
+#### Modo Desarrollo (PowerShell/CMD/Linux)
 ```bash
-npm start
-# o
 yarn start
 ```
 
 #### Modo Producción
 ```bash
-npm run build
-npm run start:prod
+yarn build
+yarn start:prod
 ```
 
 ## 🐳 Docker
@@ -175,15 +186,19 @@ docker-compose down
 
 ## 🧪 Pruebas
 
+**Ejecutar todas las pruebas:**
 ```bash
-# Ejecutar todas las pruebas
-npm test
+yarn test
+```
 
-# Ejecutar pruebas en modo watch
-npm run test:watch
+**Pruebas en modo watch:**
+```bash
+yarn test:watch
+```
 
-# Generar reporte de cobertura
-npm run test:coverage
+**Generar reporte de cobertura:**
+```bash
+yarn test:coverage
 ```
 
 ### Cobertura de Pruebas Actual
@@ -212,12 +227,12 @@ npm run test:coverage
 
 | Script | Comando | Descripción |
 |--------|---------|-------------|
-| Desarrollo | `npm start` | Inicia servidor con hot-reload |
-| Construcción | `npm run build` | Compila TypeScript |
-| Producción | `npm run start:prod` | Ejecuta versión compilada |
-| Pruebas | `npm test` | Ejecuta suite de pruebas |
-| Pruebas (watch) | `npm run test:watch` | Pruebas en modo observación |
-| Cobertura | `npm run test:coverage` | Reporte de cobertura |
+| Desarrollo | `yarn start` | Inicia servidor con hot-reload |
+| Construcción | `yarn build` | Compila TypeScript |
+| Producción | `yarn start:prod` | Ejecuta versión compilada |
+| Pruebas | `yarn test` | Ejecuta suite de pruebas |
+| Pruebas (watch) | `yarn test:watch` | Pruebas en modo observación |
+| Cobertura | `yarn test:coverage` | Reporte de cobertura |
 
 ## � CI/CD Pipeline
 
@@ -262,6 +277,8 @@ Ver [SETUP-CI.md](SETUP-CI.md) para instrucciones de configuración de Docker Hu
 ## 📄 Licencia
 
 Este proyecto está bajo la Licencia MIT.
-# CI/CD Pipeline with Docker Hub integration
 
-Pipeline tested with Docker Hub integration 
+---
+
+**✨ Pipeline de CI/CD con integración a Docker Hub**  
+*Pipeline probado con integración completa a Docker Hub* 

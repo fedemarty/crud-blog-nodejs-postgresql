@@ -29,11 +29,11 @@ Este proyecto implementa un **stack DevOps completo** para una aplicación CRUD 
 | Sequelize | 6.x | ORM para PostgreSQL |
 | PostgreSQL | 15.x | Base de datos |
 
-### **Testing & Quality:**
+### **Pruebas y Calidad:**
 | Tecnología | Versión | Propósito |
 |------------|---------|-----------|
-| Jest | 29.x | Framework de testing |
-| Supertest | 6.x | Testing HTTP |
+| Jest | 29.x | Framework de pruebas |
+| Supertest | 6.x | Pruebas HTTP |
 | ts-jest | 29.x | Jest para TypeScript |
 
 ### **DevOps Stack:**
@@ -85,7 +85,7 @@ Este proyecto implementa un **stack DevOps completo** para una aplicación CRUD 
 
 ---
 
-## 🧪 TESTING STRATEGY
+## 🧪 ESTRATEGIA DE PRUEBAS
 
 ### **Cobertura de Pruebas Unitarias (15 Tests):**
 
@@ -114,7 +114,7 @@ Este proyecto implementa un **stack DevOps completo** para una aplicación CRUD 
 - ✅ `should handle server errors gracefully`
 - ✅ `should handle malformed requests`
 
-### **🎯 Métricas de Testing:**
+### **🎯 Métricas de Pruebas:**
 - **Coverage**: 100% de controladores
 - **Tests**: 15 casos de prueba
 - **Assertions**: 45+ verificaciones
@@ -139,7 +139,7 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    # 1️⃣ SETUP ENVIRONMENT
+    # 1️⃣ CONFIGURACIÓN DEL ENTORNO
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
       with:
@@ -156,18 +156,18 @@ jobs:
     - name: Run Tests
       run: yarn test
       
-    # 4️⃣ BUILD APPLICATION
-    - name: Build Application
+    # 4️⃣ COMPILAR APLICACIÓN
+    - name: Compilar Aplicación
       run: yarn build
       
-    # 5️⃣ DOCKER BUILD & DEPLOY
+    # 5️⃣ COMPILAR DOCKER Y DESPLEGAR
     - name: Login to Docker Hub
       uses: docker/login-action@v3
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
         
-    - name: Build and Push Docker Image
+    - name: Compilar y Subir Imagen Docker
       run: |
         docker build -t ${{ secrets.DOCKER_USERNAME }}/crud-blog-api:latest .
         docker push ${{ secrets.DOCKER_USERNAME }}/crud-blog-api:latest

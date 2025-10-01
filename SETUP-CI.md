@@ -1,30 +1,55 @@
-# 🚀 CI/CD Setup - GitHub Actions
+# � SETUP CI/CD - GitHub Secrets & Pipeline Configuration
 
-## Pipeline Básico Configurado
+## ✅ **STATUS ACTUAL - PIPELINE FUNCIONANDO**
 
-Este proyecto tiene un pipeline de CI/CD básico que cumple con los siguientes requisitos:
+**El pipeline CI/CD está COMPLETAMENTE OPERATIVO** con los siguientes secrets configurados:
 
-### ✅ Pasos del Pipeline
-
-1. **📋 Instalación de Dependencias**: `npm ci`
-2. **🔍 Análisis Estático**: TypeScript check (`tsc --noEmit`)
-3. **🧪 Ejecución de Pruebas**: `npm test` (15 pruebas unitarias)
-4. **🏗️ Compilación**: `npm run build`
-5. **🐳 Build Docker**: Construcción de imagen Docker
-6. **🚀 Push Docker**: Publicación en Docker Hub (solo en main)
-
-### 🔧 Configuración Requerida
-
-Para que el pipeline funcione completamente, necesitas configurar estos **GitHub Secrets**:
-
-1. Ve a tu repositorio en GitHub
-2. Settings → Secrets and variables → Actions
-3. Agrega estos secrets:
-
+### **🚀 Secrets Requeridos (YA CONFIGURADOS)**
 ```
-DOCKER_USERNAME = tu_usuario_dockerhub
-DOCKER_PASSWORD = tu_password_dockerhub
+✅ DOCKER_USERNAME - Configurado y funcionando
+✅ DOCKER_PASSWORD - Configurado y funcionando  
 ```
+
+### **📊 Secrets Opcionales**
+```
+🔹 NEW_RELIC_LICENSE_KEY - No requerido (New Relic funciona en runtime)
+```
+
+---
+
+## ⚙️ **CÓMO CONFIGURAR GITHUB SECRETS**
+
+### **📍 Pasos:**
+1. Ve a: `https://github.com/fedemarty/crud-blog-nodejs-postgresql`
+2. **Settings** → **Secrets and variables** → **Actions**
+3. **New repository secret**
+4. Agrega cada secret con su nombre y valor exactos
+
+---
+
+## 🚀 **PIPELINE CI/CD CONFIGURADO**
+
+Este proyecto tiene un pipeline completo que cumple con los siguientes requisitos:
+
+### ✅ Pasos del Pipeline Actual
+
+1. **📋 Instalación de Dependencias**: `yarn install --frozen-lockfile`
+2. **🔍 Análisis Estático**: `yarn tsc --noEmit` (TypeScript check)
+3. **🧪 Ejecución de Pruebas**: `yarn test` (15 pruebas unitarias)
+4. **🏗️ Compilación**: `yarn build` (TypeScript → JavaScript)
+5. **🐳 Build Docker**: Construcción de imagen multi-stage optimizada
+6. **🚀 Push Docker**: Publicación automática en Docker Hub (solo en push a main)
+
+### 🔧 **Status Actual del Pipeline**
+
+✅ **Pipeline FUNCIONANDO PERFECTAMENTE** - No requiere configuración adicional
+
+**Secrets Configurados:**
+- ✅ `DOCKER_USERNAME` - Para deploy a Docker Hub  
+- ✅ `DOCKER_PASSWORD` - Credenciales Docker Hub
+
+**Secrets Opcionales (ya funcionando sin ellos):**
+- 🔹 `NEW_RELIC_LICENSE_KEY` - New Relic funciona en runtime, no necesario en build
 
 ### 🛡️ Protección de Rama Principal
 

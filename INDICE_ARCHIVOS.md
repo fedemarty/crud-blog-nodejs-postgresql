@@ -66,24 +66,24 @@
 
 ### **📁 /src - Código Fuente**
 
-#### **🧪 /src/__tests__/ - Testing Suite**
+#### **🧪 /src/__tests__/ - Suite de Pruebas**
 | Archivo | Descripción | Tests |
 |---------|------------|-------|
 | `blog.controller.test.ts` | Suite completa de pruebas unitarias | 15 tests CRUD completos |
 
 **Tests Implementados:**
-- ✅ `Create Blog` (2 tests): Success + validation error
-- ✅ `Read All Blogs` (2 tests): Success + empty response  
-- ✅ `Read Blog by ID` (2 tests): Success + not found
-- ✅ `Update Blog` (3 tests): Success + not found + validation error
-- ✅ `Delete Blog` (2 tests): Success + not found
-- ✅ `Error Handling` (4 tests): DB errors, validation, server errors, malformed requests
+- ✅ `Crear Blog` (2 tests): Éxito + error de validación
+- ✅ `Leer Todos los Blogs` (2 tests): Éxito + respuesta vacía  
+- ✅ `Leer Blog por ID` (2 tests): Éxito + no encontrado
+- ✅ `Actualizar Blog` (3 tests): Éxito + no encontrado + error de validación
+- ✅ `Eliminar Blog` (2 tests): Éxito + no encontrado
+- ✅ `Manejo de Errores` (4 tests): Errores de BD, validación, servidor, solicitudes malformadas
 
-#### **🎮 /src/controller/ - Business Logic**
+#### **🎮 /src/controller/ - Lógica de Negocio**
 | Archivo | Descripción | Responsabilidad |
 |---------|------------|-----------------|
-| `blog.controller.ts` | Controladores CRUD | Create, Read, Update, Delete blogs |
-| `blog.schema.ts` | Validaciones Zod | Esquemas de validación para requests |
+| `blog.controller.ts` | Controladores CRUD | Crear, Leer, Actualizar, Eliminar blogs |
+| `blog.schema.ts` | Validaciones Zod | Esquemas de validación para solicitudes |
 
 **Endpoints Implementados:**
 - 📝 `POST /api/blogs` - Crear nuevo blog
@@ -97,7 +97,7 @@
 |---------|------------|---------|
 | `validate.ts` | Middleware de validación | Valida requests usando esquemas Zod |
 
-#### **🗃️ /src/model/ - Data Layer**
+#### **🗃️ /src/model/ - Capa de Datos**
 | Archivo | Descripción | Tecnología |
 |---------|------------|------------|
 | `model.ts` | Modelo de datos Blog | Sequelize ORM + PostgreSQL |
@@ -120,10 +120,10 @@
 |---------|------------|---------|
 | `routes.ts` | Definición de rutas REST | Express Router + Controllers |
 
-#### **🔌 Core Files**
+#### **🔌 Archivos Principales**
 | Archivo | Descripción | Propósito |
 |---------|------------|-----------|
-| `db.ts` | Configuración DB | Conexión PostgreSQL + Sequelize |
+| `db.ts` | Configuración BD | Conexión PostgreSQL + Sequelize |
 | `server.ts` | Servidor principal | Express.js + middlewares + New Relic |
 
 ---
@@ -133,16 +133,16 @@
 #### **🚀 GitHub Actions Workflow**
 | Archivo | Descripción | Etapas |
 |---------|------------|--------|
-| `ci.yml` | Pipeline automatizado | Setup → Test → Build → Docker → Deploy |
+| `ci.yml` | Pipeline automatizado | Configuración → Pruebas → Compilación → Docker → Despliegue |
 
 **Fases del Pipeline:**
-1. 🏗️ **Environment Setup** - Node.js 20 + Yarn
-2. 📦 **Dependencies** - `yarn install --frozen-lockfile`
-3. 🧪 **Testing** - `yarn test` (15 tests)
-4. ✅ **TypeScript Check** - `yarn tsc --noEmit`  
-5. 🏭 **Build** - `yarn build`
-6. 🐳 **Docker Build** - Multi-stage optimization
-7. 🚀 **Deploy** - Push to Docker Hub
+1. 🏗️ **Configuración del Entorno** - Node.js 20 + Yarn
+2. 📦 **Dependencias** - `yarn install --frozen-lockfile`
+3. 🧪 **Pruebas** - `yarn test` (15 tests)
+4. ✅ **Verificación TypeScript** - `yarn tsc --noEmit`  
+5. 🏭 **Compilación** - `yarn build`
+6. 🐳 **Compilación Docker** - Optimización multi-stage
+7. 🚀 **Despliegue** - Push a Docker Hub
 
 ---
 
@@ -154,16 +154,16 @@
 | `Dockerfile` | Multi-stage build | 3 etapas: deps → builder → runtime |
 | `docker-compose.yml` | Orquestación local | Container + environment + networking |
 
-**Dockerfile Stages:**
+**Etapas del Dockerfile:**
 1. 🏗️ **deps**: Instalación de dependencias (Alpine + Yarn)
 2. 🔨 **builder**: Compilación TypeScript → JavaScript
 3. 🚀 **runtime**: Imagen final optimizada (solo runtime + dist)
 
 ---
 
-### **⚙️ Configuration Files**
+### **⚙️ Archivos de Configuración**
 
-#### **📋 Build & Dependencies**
+#### **📋 Compilación y Dependencias**
 | Archivo | Propósito | Tecnología |
 |---------|-----------|------------|
 | `package.json` | Dependencias y scripts | npm/yarn package definition |
@@ -283,16 +283,36 @@ docker run -p 8081:8081 crud-blog-api
 ```
 
 ### **📊 Monitoring Commands**
+
+**Windows PowerShell:**
+```powershell
+# Application health
+Invoke-RestMethod -Uri "http://localhost:8081/api/healthchecker" -Method GET
+
+# API testing
+Invoke-RestMethod -Uri "http://localhost:8081/api/blogs" -Method GET
+
+# Create blog
+$body = @{ title = "Test"; description = "Test blog" } | ConvertTo-Json
+Invoke-RestMethod -Uri "http://localhost:8081/api/blogs" -Method POST -Body $body -ContentType "application/json"
+```
+
+**Windows CMD / Linux / Mac:**
 ```bash
 # Application health
 curl http://localhost:8081/api/healthchecker
 
 # API testing
 curl http://localhost:8081/api/blogs
+
+# Create blog
 curl -X POST http://localhost:8081/api/blogs \
   -H "Content-Type: application/json" \
   -d '{"title":"Test","description":"Test blog"}'
+```
 
+**System monitoring:**
+```bash
 # New Relic logs
 docker exec blog_api cat newrelic_agent.log
 ```
