@@ -1,3 +1,6 @@
+// New Relic must be imported first, before any other modules
+require('newrelic');
+
 require("dotenv").config();
 import express, { Request, Response } from "express";
 import morgan from "morgan";
