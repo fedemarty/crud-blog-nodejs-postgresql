@@ -14,6 +14,19 @@ exports.config = {
    */
   license_key: process.env.NEW_RELIC_LICENSE_KEY,
   /**
+   * Logging configuration
+   */
+  logging: {
+    level: 'info'
+  },
+  /**
+   * Collector configuration
+   */
+  collector: {
+    host: 'collector.newrelic.com',
+    port: 443
+  },
+  /**
    * This setting controls distributed tracing.
    * Distributed tracing lets you see the path that a request takes through your
    * distributed system. Enabling distributed tracing changes the behavior of some

@@ -1,7 +1,8 @@
-// New Relic must be imported first, before any other modules
-require('newrelic');
-
+// Configure environment variables FIRST
 require("dotenv").config();
+
+// New Relic must be imported after dotenv, before any other modules
+require('newrelic');
 import express, { Request, Response } from "express";
 import morgan from "morgan";
 import cors from "cors";
