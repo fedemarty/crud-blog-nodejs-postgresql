@@ -54,6 +54,10 @@ docker-compose up --build -d
 
 # 5. Verificar (Windows PowerShell)
 Invoke-RestMethod -Uri "http://localhost:8081/api/blogs" -Method GET
+
+# 6. Generar tráfico y visualizar datos
+.\generate-and-view.ps1 -cantidad 5  # Crear blogs + visualización
+.\view-blogs.ps1 -detailed -stats    # Ver todos los blogs con estadísticas
 ```
 
 ---
@@ -208,7 +212,70 @@ yarn test:coverage
 - ✅ **Validaciones de entrada** probadas
 - ✅ **Manejo de errores** verificado
 
-## 📊 Modelo de Datos
+## � Herramientas de Testing y Visualización
+
+### **📊 Scripts de Visualización de Datos:**
+
+#### **1. Visualizar todos los blogs:**
+```powershell
+# Visualización básica
+.\view-blogs.ps1
+
+# Con detalles completos
+.\view-blogs.ps1 -detailed
+
+# Con estadísticas por categoría  
+.\view-blogs.ps1 -stats
+
+# Vista completa (detalles + estadísticas)
+.\view-blogs.ps1 -detailed -stats
+```
+
+#### **2. Generación de tráfico automatizada:**
+```powershell
+# Generar 10 blogs de prueba
+.\generate-traffic.ps1 -cantidad 10
+
+# Generar con intervalo personalizado (2 segundos entre blogs)
+.\generate-traffic.ps1 -cantidad 15 -intervalo 2
+```
+
+#### **3. Generación + Visualización en tiempo real:**
+```powershell
+# Crear 5 blogs y ver resultados inmediatamente
+.\generate-and-view.ps1 -cantidad 5
+
+# Crear blogs con detalles completos
+.\generate-and-view.ps1 -cantidad 10 -showDetails
+```
+
+### **🎯 Características de los Scripts:**
+
+#### **📈 Información Mostrada:**
+- ✅ **ID único** de cada blog (UUID)
+- ✅ **Título y descripción** completos
+- ✅ **Categoría** (tecnología, ciencia, arte, etc.)
+- ✅ **Estado** (publicado ✅ / borrador ❌)  
+- ✅ **Fechas** de creación y actualización
+- ✅ **Estadísticas** por categoría y estado
+- ✅ **Conteos totales** y porcentajes
+
+#### **🔧 Datos Generados Automáticamente:**
+- 📝 **Títulos dinámicos** con adjetivos y temas variados
+- 📂 **8 categorías** predefinidas (tecnología, deportes, ciencia, arte, música, educación, salud, viajes)
+- 📋 **Estados aleatorios** (publicado/borrador)
+- 📄 **Descripciones detalladas** con timestamps
+- 🎯 **Datos realistas** para testing de carga
+
+#### **🎨 Visualización con Colores:**
+- 🟢 **Verde**: Blogs publicados y operaciones exitosas
+- 🔴 **Rojo**: Borradores y errores
+- 🔵 **Cyan**: IDs e información técnica
+- 🟡 **Amarillo**: Títulos de sección
+- ⚪ **Blanco**: Contenido principal
+- 🟣 **Magenta**: Categorías
+
+## �📊 Modelo de Datos
 
 ### Blog Entity
 ```typescript

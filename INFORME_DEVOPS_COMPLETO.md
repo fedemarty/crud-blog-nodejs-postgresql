@@ -397,6 +397,100 @@ yarn tsc --noEmit
 
 ---
 
+## 🚀 **HERRAMIENTAS AVANZADAS DE TESTING Y VISUALIZACIÓN**
+
+### **📊 Scripts de Visualización y Generación de Tráfico**
+
+Este proyecto incluye scripts PowerShell especializados para testing avanzado, generación de datos y visualización en tiempo real.
+
+#### **🎯 Scripts Incluidos:**
+
+##### **1️⃣ Visualizador de Datos: `view-blogs.ps1`**
+```powershell
+# Visualización básica
+.\view-blogs.ps1
+
+# Con detalles completos (descripción, fechas, etc.)
+.\view-blogs.ps1 -detailed
+
+# Con estadísticas por categoría y estado
+.\view-blogs.ps1 -stats
+
+# Vista completa (detalles + estadísticas)
+.\view-blogs.ps1 -detailed -stats
+```
+
+##### **2️⃣ Generador de Tráfico: `generate-traffic.ps1`**
+```powershell
+# Generar 10 blogs de prueba
+.\generate-traffic.ps1 -cantidad 10
+
+# Generar con intervalo personalizado (2 segundos entre creaciones)
+.\generate-traffic.ps1 -cantidad 25 -intervalo 2
+
+# Generación rápida sin pausas
+.\generate-traffic.ps1 -cantidad 50 -intervalo 0
+```
+
+##### **3️⃣ Generación + Visualización: `generate-and-view.ps1`**
+```powershell
+# Crear blogs y ver resultados en tiempo real
+.\generate-and-view.ps1 -cantidad 5
+
+# Con detalles completos de cada blog creado
+.\generate-and-view.ps1 -cantidad 15 -showDetails
+```
+
+#### **📈 Información Mostrada:**
+
+##### **🔍 Datos Detallados:**
+- ✅ **ID único** (UUID) de cada blog
+- ✅ **Título y descripción** completos
+- ✅ **Categoría** (tecnología, ciencia, arte, música, educación, salud, viajes, deportes)
+- ✅ **Estado** (✅ publicado / ❌ borrador)
+- ✅ **Fechas** de creación y actualización (timestamps)
+- ✅ **Tasa de éxito** de operaciones
+
+##### **📊 Estadísticas Avanzadas:**
+- 📈 **Total de blogs** en la base de datos
+- 📂 **Distribución por categorías** con porcentajes
+- 🎯 **Blogs publicados vs borradores**
+- ⏱️ **Tiempo de respuesta** de la API
+- 🔄 **Métricas de inserción** en tiempo real
+
+#### **🎨 Visualización Organizada:**
+
+##### **🌈 Código de Colores:**
+- 🟢 **Verde**: Operaciones exitosas y blogs publicados
+- 🔴 **Rojo**: Errores y blogs en borrador  
+- 🔵 **Cyan**: IDs, información técnica y timestamps
+- 🟡 **Amarillo**: Títulos de sección y encabezados
+- ⚪ **Blanco**: Contenido principal y títulos de blogs
+- 🟣 **Magenta**: Categorías y clasificaciones
+- ⚫ **Gris**: Separadores y información secundaria
+
+#### **🧪 Casos de Uso DevOps:**
+
+##### **📊 Para Monitoreo:**
+- Verificar **métricas de New Relic** con tráfico real
+- Análisis de **distribución de datos** por categoría
+- Validación de **inserción correcta** en PostgreSQL  
+- **Monitoreo de rendimiento** de la API REST
+
+##### **🔧 Para Testing:**
+- Generación de **datos de prueba masivos**
+- **Testing de carga** de la aplicación
+- Validación de **manejo de diferentes categorías**
+- **Verificación end-to-end** del stack completo
+
+##### **🎯 Para Demostración:**
+- Mostrar **funcionalidad CRUD** completa
+- **Visualización de datos** en tiempo real
+- Demostración de **herramientas DevOps** integradas
+- **Métricas de monitoreo** con datos reales
+
+---
+
 ### **🏗️ PASO 3: BUILD Y DESARROLLO**
 
 #### **1️⃣ Desarrollo Local:**

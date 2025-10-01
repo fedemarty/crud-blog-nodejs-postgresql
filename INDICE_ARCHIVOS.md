@@ -47,7 +47,12 @@
 │   ├── newrelic.js                   # • Configuración New Relic APM
 │   └── newrelic_agent.log            # • Logs del agente New Relic (generado)
 │
-├── 📚 **DOCUMENTACIÓN**
+├── � **SCRIPTS DE TESTING Y VISUALIZACIÓN**
+│   ├── generate-traffic.ps1          # • Generador de tráfico masivo para testing
+│   ├── view-blogs.ps1                # • Visualizador completo de blogs con estadísticas
+│   └── generate-and-view.ps1         # • Generación + visualización en tiempo real
+│
+├── �📚 **DOCUMENTACIÓN**
 │   ├── README.md                     # • Documentación principal del proyecto
 │   ├── INFORME_DEVOPS_COMPLETO.md    # • Informe técnico detallado (200+ páginas)
 │   ├── QUICK_START_GUIDE.md          # • Guía instalación rápida (15 minutos)
@@ -282,7 +287,31 @@ docker build -t crud-blog-api .
 docker run -p 8081:8081 crud-blog-api
 ```
 
-### **📊 Monitoring Commands**
+### **� Scripts de Testing y Visualización (PowerShell)**
+```powershell
+# Visualización de datos
+.\view-blogs.ps1                      # Vista básica de todos los blogs
+.\view-blogs.ps1 -detailed            # Con detalles completos (descripción, fechas)
+.\view-blogs.ps1 -stats               # Con estadísticas por categoría
+.\view-blogs.ps1 -detailed -stats     # Vista completa (todo incluido)
+
+# Generación de tráfico
+.\generate-traffic.ps1 -cantidad 10                    # Generar 10 blogs
+.\generate-traffic.ps1 -cantidad 25 -intervalo 2       # 25 blogs con pausa de 2 seg
+
+# Generación + Visualización en tiempo real  
+.\generate-and-view.ps1 -cantidad 5                    # Crear 5 blogs + mostrar resultados
+.\generate-and-view.ps1 -cantidad 15 -showDetails      # Con detalles de cada blog creado
+```
+
+**Características de los Scripts:**
+- 📊 **Estadísticas completas**: Conteos por categoría, estado, porcentajes
+- 🎨 **Colores organizados**: Verde (éxito), Rojo (error), Cyan (info técnica)  
+- 📝 **Datos realistas**: Títulos variados, 8 categorías, estados aleatorios
+- 🔄 **Tiempo real**: Visualización inmediata de blogs creados
+- 📈 **Métricas detalladas**: IDs, fechas, tasa de éxito, distribución
+
+### **�📊 Monitoring Commands**
 
 **Windows PowerShell:**
 ```powershell

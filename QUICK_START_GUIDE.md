@@ -330,6 +330,78 @@ sequelize.authenticate()
 - 🐳 **Containerización optimizada**
 - 📊 **Monitoreo APM en tiempo real**
 
+---
+
+## 🚀 **HERRAMIENTAS DE TESTING Y VISUALIZACIÓN**
+
+### **📊 Scripts Incluidos en el Proyecto:**
+
+#### **1️⃣ Visualizar todos los blogs:**
+```powershell
+# Vista básica
+.\view-blogs.ps1
+
+# Vista completa con detalles y estadísticas
+.\view-blogs.ps1 -detailed -stats
+```
+
+#### **2️⃣ Generar tráfico de prueba:**
+```powershell
+# Generar 10 blogs automáticamente
+.\generate-traffic.ps1 -cantidad 10
+
+# Con intervalo personalizado (2 segundos entre creaciones)
+.\generate-traffic.ps1 -cantidad 15 -intervalo 2
+```
+
+#### **3️⃣ Generar + Visualizar en tiempo real:**
+```powershell
+# Crear y ver resultados inmediatamente
+.\generate-and-view.ps1 -cantidad 5
+
+# Con detalles completos de cada blog creado
+.\generate-and-view.ps1 -cantidad 10 -showDetails
+```
+
+### **🎯 Lo que puedes ver:**
+
+#### **📈 Información Detallada:**
+- ✅ **ID único** de cada blog (UUID)
+- ✅ **Título y descripción** completos
+- ✅ **Categoría** (tecnología, ciencia, arte, música, etc.)
+- ✅ **Estado** (✅ publicado / ❌ borrador)
+- ✅ **Fechas** de creación y actualización
+- ✅ **Estadísticas** por categoría
+- ✅ **Conteos totales** y porcentajes de éxito
+
+#### **🎨 Visualización con Colores:**
+- 🟢 **Verde**: Operaciones exitosas y blogs publicados
+- 🔴 **Rojo**: Errores y blogs en borrador
+- 🔵 **Cyan**: IDs e información técnica
+- 🟡 **Amarillo**: Títulos de sección
+- 🟣 **Magenta**: Categorías
+
+### **💡 Casos de Uso Prácticos:**
+
+#### **🧪 Para Testing:**
+- Generar datos de prueba masivos
+- Verificar rendimiento de la API
+- Validar inserción correcta en PostgreSQL
+- Probar manejo de diferentes categorías
+
+#### **📊 Para Monitoreo:**
+- Ver métricas de New Relic con tráfico real
+- Analizar distribución de datos
+- Verificar estado de todos los registros
+- Obtener estadísticas detalladas
+
+#### **🎯 Para Demostración:**
+- Mostrar funcionalidad CRUD completa
+- Visualizar datos en tiempo real
+- Demostrar herramientas DevOps integradas
+
+---
+
 ### **📚 Documentación Completa:**
 - Ver `INFORME_DEVOPS_COMPLETO.md` para detalles técnicos
 - Ver `README.md` para documentación del proyecto
