@@ -47,7 +47,7 @@ yarn install
 yarn test  # ✅ 15 pruebas unitarias
 
 # 3. Desarrollo
-yarn dev   # http://localhost:8081
+yarn start   # http://localhost:8081
 
 # 4. Docker
 docker-compose up --build -d

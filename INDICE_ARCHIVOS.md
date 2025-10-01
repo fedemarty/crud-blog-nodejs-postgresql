@@ -256,9 +256,9 @@ graph TD
 ```bash
 # Setup inicial
 yarn install                    # Instalar dependencias
-yarn dev                       # Desarrollo con hot reload
+yarn start                     # Desarrollo con hot reload
 yarn build                     # Build TypeScript → JavaScript
-yarn start                     # Ejecutar build de producción
+yarn start:prod                # Ejecutar build de producción
 
 # Testing
 yarn test                      # Ejecutar 15 tests unitarios  

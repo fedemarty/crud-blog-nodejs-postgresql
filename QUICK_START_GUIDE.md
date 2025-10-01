@@ -60,7 +60,7 @@ yarn test
 ## 🏗️ **PASO 3: DESARROLLO LOCAL**
 ```bash
 # Iniciar en desarrollo
-yarn dev
+yarn start
 
 # Verificar funcionamiento
 

@@ -401,7 +401,7 @@ yarn tsc --noEmit
 
 #### **1️⃣ Desarrollo Local:**
 ```bash
-yarn dev
+yarn start
 ```
 
 #### **2️⃣ Build Producción:**
@@ -583,7 +583,7 @@ Branch: main
 ### **🎯 Deployment Environments:**
 
 #### **🔧 Development:**
-- Local development with `yarn dev`
+- Local development with `yarn start`
 - Hot reload con ts-node-dev
 - Database local o development
 
