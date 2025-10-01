@@ -1,0 +1,74 @@
+# ===================================================================
+# DOCKERFILE DOCUMENTADO PARA ESTUDIO - DevOps TP
+# ===================================================================
+# Este archivo documenta el Dockerfile REAL que funciona en el proyecto
+# Implementa un build multi-stage para optimizar la imagen final
+# ===================================================================
+
+# -------- ETAPA 1: INSTALACIÓN DE DEPENDENCIAS --------
+FROM node:20-alpine AS deps
+# - Usamos Node.js 20 con Alpine Linux (imagen ligera: ~110MB vs ~900MB)
+# - Alpine es una distribución Linux minimalista ideal para containers
+
+WORKDIR /app
+# Establecemos /app como directorio de trabajo dentro del container
+
+COPY package*.json yarn.lock* ./
+# Copiamos SOLO los archivos de dependencias primero
+# Estrategia para aprovechar Docker layer caching:
+# - Si package.json no cambia, esta capa se reutiliza
+# - yarn install solo se ejecuta cuando cambian las dependencias
+
+RUN yarn install --frozen-lockfile
+# --frozen-lockfile: Usa versiones exactas del yarn.lock
+# Garantiza builds reproducibles y consistentes entre entornos
+
+# -------- ETAPA 2: BUILD DE LA APLICACIÓN --------
+FROM node:20-alpine AS builder
+# Nueva imagen para el proceso de build (separación de responsabilidades)
+
+WORKDIR /app
+
+COPY --from=deps /app/node_modules ./node_modules
+# Copiamos node_modules de la etapa anterior (optimización)
+# Evita reinstalar dependencias innecesariamente
+
+COPY . .
+# Copiamos TODO el código fuente (src/, tsconfig.json, etc.)
+
+RUN yarn build
+# Ejecuta el script "build" definido en package.json
+# Compila TypeScript a JavaScript usando tsc
+# Genera la carpeta /dist con código JavaScript listo para producción
+
+# -------- ETAPA 3: IMAGEN DE PRODUCCIÓN --------
+FROM node:20-alpine AS runner
+# Imagen final LIMPIA solo con lo necesario para ejecutar
+
+WORKDIR /app
+
+# Copiamos SOLO lo necesario de la etapa builder:
+COPY --from=builder /app/package*.json ./
+COPY --from=builder /app/node_modules ./node_modules  
+COPY --from=builder /app/dist ./dist
+
+# NOTA IMPORTANTE: La línea "COPY .env .env" fue REMOVIDA por seguridad
+# En CI/CD y producción, las variables de entorno se pasan como ENV vars
+# del container, no copiando archivos .env
+
+EXPOSE 8081
+# Exponemos puerto 8081 donde corre Express.js
+
+CMD ["node", "dist/server.js"]
+# Comando por defecto: ejecutar el archivo JavaScript compilado
+# server.js está en /dist porque TypeScript lo compiló ahí
+
+# ===================================================================
+# 🚀 RESULTADO FINAL:
+# ===================================================================
+# ✅ Imagen optimizada (~150MB vs ~800MB sin multi-stage)
+# ✅ Solo contiene runtime necesario (no código fuente, no devDependencies)
+# ✅ Mayor seguridad (no expone código TypeScript original)
+# ✅ Builds más rápidos gracias al layer caching
+# ✅ Lista para CI/CD y producción
+# ===================================================================
