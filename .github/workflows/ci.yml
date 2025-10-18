@@ -61,14 +61,26 @@ jobs:
         docker push ${{ secrets.DOCKER_USERNAME }}/blog-api:latest
         docker push ${{ secrets.DOCKER_USERNAME }}/blog-api:${{ github.sha }}
     
-    # 10. Resumen del pipeline
-    - name: ✅ Pipeline Summary
+    # 10. Marcador de Deployment en New Relic (solo en push a main exitoso)
+    - name: 📊 Marcador de Deployment en New Relic
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      uses: newrelic/deployment-marker-action@v2.3.0
+      with:
+        apiKey: ${{ secrets.NEW_RELIC_API_KEY }}
+        guid: ${{ secrets.NEW_RELIC_DEPLOYMENT_ENTITY_GUID }}
+        version: "${{ github.sha }}"
+        user: "${{ github.actor }}"
+        description: "Deployment desde rama main - SHA: ${{ github.sha }}"
+    
+    # 11. Resumen del pipeline
+    - name: ✅ Resumen del Pipeline
       run: |
-        echo "✅ Dependencies installed successfully"
-        echo "✅ TypeScript analysis passed"
-        echo "✅ All tests passed"
-        echo "✅ Build completed successfully"
-        echo "✅ Docker image built successfully"
+        echo "✅ Dependencias instaladas exitosamente"
+        echo "✅ Análisis estático de TypeScript completado"
+        echo "✅ Todas las pruebas unitarias pasaron"
+        echo "✅ Build de la aplicación completado"
+        echo "✅ Imagen Docker construida exitosamente"
         if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/main" ]]; then
-          echo "✅ Docker image pushed to registry"
+          echo "✅ Imagen Docker publicada en registry"
+          echo "✅ Marcador de deployment creado en New Relic"
         fi

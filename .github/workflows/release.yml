@@ -1,0 +1,38 @@
+name: Release y Seguimiento de Cambios
+
+# Ejecuta cuando se publica un release en GitHub
+on:
+  release:
+    types: [published]
+
+jobs:
+  release-tracking:
+    name: 🎯 Seguimiento de Cambios en Release
+    runs-on: ubuntu-latest
+    
+    steps:
+    # 1. Checkout del código
+    - name: 📥 Descargar código fuente
+      uses: actions/checkout@v4
+      
+    # 2. Configurar la versión del release
+    - name: 🏷️ Configurar Versión del Release desde Tag
+      run: echo "RELEASE_VERSION=${{ github.ref_name }}" >> $GITHUB_ENV
+      
+    # 3. Marcador de Deployment de Release en New Relic
+    - name: 📊 Marcador de Deployment de Release en New Relic
+      uses: newrelic/deployment-marker-action@v2.3.0
+      with:
+        apiKey: ${{ secrets.NEW_RELIC_API_KEY }}
+        guid: ${{ secrets.NEW_RELIC_DEPLOYMENT_ENTITY_GUID }}
+        version: "${{ env.RELEASE_VERSION }}"
+        user: "${{ github.actor }}"
+        description: "🚀 Release ${{ env.RELEASE_VERSION }} publicado por ${{ github.actor }}"
+        
+    # 4. Notificación de éxito
+    - name: ✅ Resumen de Seguimiento de Release
+      run: |
+        echo "🎉 Release ${{ env.RELEASE_VERSION }} registrado exitosamente en New Relic"
+        echo "👤 Publicado por: ${{ github.actor }}"
+        echo "📊 Marcador de deployment creado para correlación de monitoreo"
+        echo "🔗 Revisa el dashboard de New Relic para análisis de impacto del deployment"
