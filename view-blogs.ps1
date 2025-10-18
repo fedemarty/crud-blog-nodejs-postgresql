@@ -18,9 +18,9 @@ try {
     Write-Host "✅ API disponible: $($healthCheck.message)" -ForegroundColor Green
     Write-Host ""
     
-    # Obtener todos los blogs
+    # Obtener todos los blogs (sin límite de paginación)
     Write-Host "📥 Obteniendo blogs de la base de datos..." -ForegroundColor Cyan
-    $response = Invoke-RestMethod -Uri $baseUrl -Method GET -TimeoutSec 10
+    $response = Invoke-RestMethod -Uri "$baseUrl" -Method GET -Body @{limit=1000} -TimeoutSec 10
     $blogs = $response.blogs
     
     if ($blogs.Count -eq 0) {
@@ -30,7 +30,7 @@ try {
         return
     }
     
-    Write-Host "✅ Encontrados $($blogs.Count) blogs en total" -ForegroundColor Green
+    Write-Host "✅ Encontrados $($blogs.Count) blogs en total (API devuelve $($response.results) por página)" -ForegroundColor Green
     Write-Host ""
     
     # Mostrar estadísticas si se solicita

@@ -18,9 +18,10 @@ Write-Host ""
 
 # Verificar estado inicial
 try {
-    $responseBefore = Invoke-RestMethod -Uri $baseUrl -Method GET
+    $responseBefore = Invoke-RestMethod -Uri $baseUrl -Method GET -Body @{limit=1000}
     $blogsBefore = $responseBefore.blogs
-    Write-Host "📊 Blogs actuales en la base: $($blogsBefore.Count)" -ForegroundColor Cyan
+    $totalBlogsInicial = $blogsBefore.Count
+    Write-Host "📊 Blogs actuales en la base: $totalBlogsInicial (consultando con límite expandido)"
     Write-Host ""
 } catch {
     Write-Host "❌ No se puede conectar a la API. Asegúrate de que esté corriendo." -ForegroundColor Red
@@ -48,22 +49,26 @@ for ($i = 1; $i -le $cantidad; $i++) {
     try {
         $response = Invoke-RestMethod -Uri $baseUrl -Method POST -Body $body -ContentType "application/json" -TimeoutSec 10
         
-        $status = if (($body | ConvertFrom-Json).published) { "✅ PUBLICADO" } else { "❌ BORRADOR" }
-        $statusColor = if (($body | ConvertFrom-Json).published) { "Green" } else { "Red" }
+        # Acceder correctamente a la estructura de respuesta
+        $blogData = $response.data.blog
+        $requestData = $body | ConvertFrom-Json
+        
+        $status = if ($requestData.published) { "✅ PUBLICADO" } else { "❌ BORRADOR" }
+        $statusColor = if ($requestData.published) { "Green" } else { "Red" }
         
         Write-Host "[$i/$cantidad] 📝 CREADO:" -ForegroundColor Green
-        Write-Host "   🆔 ID: $($response.id)" -ForegroundColor Cyan
-        Write-Host "   📰 Título: $($response.title)" -ForegroundColor White
-        Write-Host "   🏷️  Categoría: $($response.category)" -ForegroundColor Magenta
+        Write-Host "   🆔 ID: $($blogData.id)" -ForegroundColor Cyan
+        Write-Host "   📰 Título: $($blogData.title)" -ForegroundColor White
+        Write-Host "   🏷️  Categoría: $($blogData.category)" -ForegroundColor Magenta
         Write-Host "   📋 Estado: " -NoNewline -ForegroundColor Gray
         Write-Host "$status" -ForegroundColor $statusColor
         
         if ($showDetails) {
-            Write-Host "   📄 Descripción: $($response.description.Substring(0, [Math]::Min(100, $response.description.Length)))..." -ForegroundColor Gray
-            Write-Host "   📅 Creado: $($response.createdAt)" -ForegroundColor DarkGray
+            Write-Host "   📄 Descripción: $($blogData.description.Substring(0, [Math]::Min(100, $blogData.description.Length)))..." -ForegroundColor Gray
+            Write-Host "   📅 Creado: $($blogData.createdAt)" -ForegroundColor DarkGray
         }
         
-        $blogIds += $response.id
+        $blogIds += $blogData.id
         $exitosos++
         
         Write-Host "   " + "-" * 50 -ForegroundColor DarkGray

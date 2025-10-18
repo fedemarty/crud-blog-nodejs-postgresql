@@ -35,7 +35,9 @@ for ($i = 1; $i -le $cantidad; $i++) {
         
         $response = Invoke-RestMethod -Uri $baseUrl -Method POST -Body $body -ContentType "application/json" -TimeoutSec 10
         
-        Write-Host "   ✅ Blog creado exitosamente - ID: $($response.id)" -ForegroundColor Cyan
+        # Acceder correctamente a la estructura de respuesta
+        $blogId = $response.data.blog.id
+        Write-Host "   ✅ Blog creado exitosamente - ID: $blogId" -ForegroundColor Cyan
         $exitosos++
         
     } catch {
@@ -59,8 +61,8 @@ Write-Host "📈 Tasa de éxito: $([math]::Round(($exitosos / $cantidad) * 100, 
 Write-Host ""
 Write-Host "🔍 Verificando últimos blogs creados..." -ForegroundColor Yellow
 try {
-    $blogs = Invoke-RestMethod -Uri $baseUrl -Method GET
-    Write-Host "📋 Total de blogs en la base: $($blogs.Count)" -ForegroundColor Cyan
+    $response = Invoke-RestMethod -Uri $baseUrl -Method GET
+    Write-Host "📋 Total de blogs en la base: $($response.results)" -ForegroundColor Cyan
 } catch {
     Write-Host "❌ Error al verificar blogs: $($_.Exception.Message)" -ForegroundColor Red
 }
