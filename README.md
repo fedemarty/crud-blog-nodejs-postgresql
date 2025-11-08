@@ -349,3 +349,16 @@ Este proyecto está bajo la Licencia MIT.
 
 **✨ Pipeline de CI/CD con integración a Docker Hub**  
 *Pipeline probado con integración completa a Docker Hub* 
+
+---
+
+##  Test de Pull Request
+
+Esta línea fue agregada para validar el flujo completo de Pull Request:
+-  GitHub Actions debe ejecutar CI pipeline
+-  Tests deben pasar
+-  Build debe completarse
+-  Docker image debe construirse
+-  NO debe publicar a Docker Hub (solo en merge a main)
+
+*Fecha de prueba: 2025-11-08 11:32:47*
