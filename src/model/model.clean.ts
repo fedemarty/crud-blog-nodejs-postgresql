@@ -6,7 +6,7 @@
 import { sequelize, DataTypes } from "../db";
 
 /**
- * 📋 Modelo de Blog
+ * 📋 Modelo de Blog. 
  * Campos: ID, Título, Descripción, Categoría, Estado de Publicación, Fechas
  */
 const BlogModel = sequelize.define("blogs", {
