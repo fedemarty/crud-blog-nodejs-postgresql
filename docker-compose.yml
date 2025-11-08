@@ -1,9 +1,46 @@
-version: "3.8"
+# ==========================================
+# DOCKER COMPOSE - BLOG API DEPLOYMENT
+# ==========================================
+# Este archivo define la configuración para containerizar y ejecutar
+# nuestra API de Blog Management con todas sus dependencias
+
+version: "3.8"  # Versión de Docker Compose (compatible con Docker Engine 18.06.0+)
+
 services:
+  # ==========================================
+  # 📦 SERVICIO PRINCIPAL - API REST
+  # ==========================================
   api:
+    # BUILD: Construye la imagen desde el Dockerfile local
+    # Utiliza multi-stage build (deps -> builder -> runner)
     build: .
+    
+    # CONTAINER NAME: Nombre del contenedor para fácil identificación
     container_name: blog_api
+    
+    # PORT MAPPING: Mapea puerto del host al contenedor
+    # host:container -> localhost:8081 apunta al puerto 8081 del contenedor
     ports:
       - "8081:8081"
+    
+    # ENVIRONMENT VARIABLES: Carga variables desde archivo .env
+    # Incluye: DATABASE_URL (Render PostgreSQL), NEW_RELIC_LICENSE_KEY, etc.
     env_file:
       - .env
+      
+    # ==========================================
+    # FUNCIONALIDADES DEL CONTENEDOR:
+    # ==========================================
+    # Ejecuta API Node.js/TypeScript compilada
+    # Conecta automáticamente a PostgreSQL en Render Cloud
+    # Integra New Relic APM para monitoreo
+    # Expone endpoints REST en http://localhost:8081/api/
+    # Health check disponible en /api/healthchecker
+    # ==========================================
+    
+    # ARQUITECTURA DE DEPLOYMENT:
+    # 1. GitHub Actions builds & tests
+    # 2. Docker image se publica en Docker Hub
+    # 3. Esta configuración permite ejecutar localmente
+    # 4. Conecta a infraestructura cloud (Render DB + New Relic)
+    # 5. Simula entorno de producción containerizado

@@ -38,7 +38,7 @@ import BlogModel from '../model/model';
 
 const mockedBlogModel = BlogModel as jest.Mocked<typeof BlogModel>;
 
-// 🛠️ Helpers para crear mocks de Request y Response
+// Helpers para crear mocks de Request y Response
 const createMockRequest = (params = {}, body = {}, query = {}): any => ({ params, body, query });
 
 const createMockResponse = (): Partial<Response> => {
@@ -48,14 +48,14 @@ const createMockResponse = (): Partial<Response> => {
   return res;
 };
 
-describe('🚀 Blog API - Tests Unitarios', () => {
+describe('Blog API - Tests Unitarios', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  describe('📝 Operaciones CRUD', () => {
+  describe('Operaciones CRUD', () => {
     
-    it('✅ CREATE - Debería crear un nuevo blog exitosamente', async () => {
+    it('CREATE - Debería crear un nuevo blog exitosamente', async () => {
       // 📋 Datos de entrada
       const blogData = {
         title: 'Mi Nuevo Blog',
@@ -71,16 +71,16 @@ describe('🚀 Blog API - Tests Unitarios', () => {
         updatedAt: new Date(),
       };
 
-      // 🎯 Setup del mock
+      // Setup del mock
       mockedBlogModel.create.mockResolvedValue(expectedBlog as any);
 
       const req = createMockRequest({}, blogData);
       const res = createMockResponse();
 
-      // 🚀 Ejecutar
+      // Ejecutar
       await createBlogController(req, res as Response);
 
-      // ✅ Verificaciones
+      // Verificaciones
       expect(mockedBlogModel.create).toHaveBeenCalledWith(blogData);
       expect(res.status).toHaveBeenCalledWith(201);
       expect(res.json).toHaveBeenCalledWith({
@@ -90,7 +90,7 @@ describe('🚀 Blog API - Tests Unitarios', () => {
     });
 
     it('🔍 READ - Debería obtener un blog por ID', async () => {
-      // 📋 Datos de prueba
+      // Datos de prueba
       const blogId = '123e4567-e89b-12d3-a456-426614174000';
       const expectedBlog = {
         id: blogId,
@@ -100,16 +100,16 @@ describe('🚀 Blog API - Tests Unitarios', () => {
         published: true,
       };
 
-      // 🎯 Setup del mock
+      // Setup del mock
       mockedBlogModel.findByPk.mockResolvedValue(expectedBlog as any);
 
       const req = createMockRequest({ blogId });
       const res = createMockResponse();
 
-      // 🚀 Ejecutar
+      // Ejecutar
       await findBlogController(req, res as Response);
 
-      // ✅ Verificaciones
+      // Verificaciones
       expect(mockedBlogModel.findByPk).toHaveBeenCalledWith(blogId);
       expect(res.status).toHaveBeenCalledWith(200);
       expect(res.json).toHaveBeenCalledWith({
@@ -118,7 +118,7 @@ describe('🚀 Blog API - Tests Unitarios', () => {
       });
     });
 
-    it('📋 LIST - Debería listar todos los blogs', async () => {
+    it('📋LIST - Debería listar todos los blogs', async () => {
       // 📋 Datos de prueba
       const mockBlogs = [
         { id: '1', title: 'Blog Uno', description: 'Primer blog', published: true },
@@ -201,7 +201,7 @@ describe('🚀 Blog API - Tests Unitarios', () => {
       expect(res.status).toHaveBeenCalledWith(204);
     });
 
-    it('❌ ERROR - Debería manejar errores de validación', async () => {
+    it('ERROR - Debería manejar errores de validación', async () => {
       // 📋 Datos de prueba (título duplicado)
       const duplicateError = new Error('El título ya existe');
       duplicateError.name = 'SequelizeUniqueConstraintError';

@@ -13,7 +13,7 @@ import {
     UpdateBlogInput
 } from "./blog.schema";
 
-// ✅ CREATE - Crear un nuevo blog
+// CREATE - Crear un nuevo blog
 export const createBlogController = async (
     req: Request<{}, {}, CreateBlogInput>,
     res: Response
@@ -22,7 +22,7 @@ export const createBlogController = async (
         // 📋 Extraer datos del request
         const { title, description, category, published } = req.body;
 
-        // 🚀 Crear blog en la base de datos
+        // Crear blog en la base de datos
         const blog = await BlogModel.create({
             title, 
             description, 
@@ -37,7 +37,7 @@ export const createBlogController = async (
         });
 
     } catch (error: any) {
-        // ❌ Manejo de errores específicos
+        // Manejo de errores específicos
         if (error.name === "SequelizeUniqueConstraintError") {
             return res.status(409).json({
                 status: "error",
@@ -45,7 +45,7 @@ export const createBlogController = async (
             });
         }
 
-        // ❌ Error genérico
+        // Error genérico
         res.status(500).json({
             status: "error",
             message: error.message,
@@ -59,13 +59,13 @@ export const findBlogController = async (
     res: Response
 ) => {
     try {
-        // 📋 Obtener ID del parámetro
+        // Obtener ID del parámetro
         const { blogId } = req.params;
 
-        // 🔍 Buscar blog en la base de datos
+        // Buscar blog en la base de datos
         const blog = await BlogModel.findByPk(blogId);
 
-        // ❌ Blog no encontrado
+        // Blog no encontrado
         if (!blog) {
             return res.status(404).json({
                 status: "fail",
@@ -73,14 +73,14 @@ export const findBlogController = async (
             });
         }
 
-        // ✅ Blog encontrado
+        // Blog encontrado
         res.status(200).json({
             status: "success",
             data: { blog },
         });
 
     } catch (error: any) {
-        // ❌ Error del servidor
+        // Error del servidor
         res.status(500).json({
             status: "error",
             message: error.message,
@@ -106,7 +106,7 @@ export const findAllBlogsController = async (
             order: [['createdAt', 'DESC']]
         });
 
-        // ✅ Respuesta con resultados
+        // Respuesta con resultados
         res.status(200).json({
             status: "success",
             results: blogs.length,
@@ -114,7 +114,7 @@ export const findAllBlogsController = async (
         });
 
     } catch (error: any) {
-        // ❌ Error del servidor
+        // Error del servidor
         res.status(500).json({
             status: "error",
             message: error.message,
@@ -137,7 +137,7 @@ export const updateBlogController = async (
             where: { id: blogId }
         });
 
-        // ❌ Blog no encontrado
+        // Blog no encontrado
         if (affectedRows === 0) {
             return res.status(404).json({
                 status: "fail",
@@ -155,7 +155,7 @@ export const updateBlogController = async (
         });
 
     } catch (error: any) {
-        // ❌ Error del servidor
+        // Error del servidor
         res.status(500).json({
             status: "error",
             message: error.message,

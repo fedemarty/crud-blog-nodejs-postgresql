@@ -1,0 +1,45 @@
+services:
+  # ==========================================
+  # 🚀 WEB SERVICE - BLOG API
+  # ==========================================
+  - type: web
+    name: blog-api-nodejs
+    runtime: docker
+    region: oregon  # O 'virginia' para estar cerca de tu PostgreSQL
+    plan: free      # Cambiar a 'starter' para plan pago sin sleep
+    branch: main
+    
+    # DOCKERFILE: Render detecta automáticamente el Dockerfile en la raíz
+    dockerfilePath: ./Dockerfile
+    
+    # HEALTH CHECK: Endpoint para verificar que la app está funcionando
+    healthCheckPath: /api/healthchecker
+    
+    # AUTO DEPLOY: Re-desplegar automáticamente en cada push a main
+    autoDeploy: true
+    
+    # ENVIRONMENT VARIABLES
+    # ⚠️ IMPORTANTE: Por seguridad, configura estas variables manualmente en Render Dashboard
+    envVars:
+      # Application
+      - key: NODE_ENV
+        value: production
+      
+      - key: NEW_RELIC_APP_NAME
+        value: CRUD Blog API - Production
+      
+      - key: NEW_RELIC_ENABLED
+        value: "true"
+      
+      # ⚠️ Configurar manualmente en Dashboard (sensibles):
+      # - DATABASE_URL (PostgreSQL connection string)
+      # - NEW_RELIC_LICENSE_KEY
+      # - FRONTEND_URL (opcional)
+
+# ==========================================
+# 📚 NOTAS:
+# ==========================================
+# 1. Este archivo es OPCIONAL - Render puede configurarse desde el dashboard
+# 2. Si usas este archivo, commitéalo: git add render.yaml && git commit -m "Add Render config"
+# 3. Render detectará automáticamente este archivo y aplicará la configuración
+# 4. Para variables sensibles, siempre configúralas en el Dashboard (no en este archivo)
