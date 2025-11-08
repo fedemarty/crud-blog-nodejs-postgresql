@@ -349,3 +349,12 @@ Este proyecto está bajo la Licencia MIT.
 
 **✨ Pipeline de CI/CD con integración a Docker Hub**  
 *Pipeline probado con integración completa a Docker Hub* 
+
+---
+
+##  Prueba de Branch Protection
+
+**Intento de push directo a main** - Validando reglas de protección.
+
+Si ves esto sin PR, significa que tienes bypass permissions.
+
