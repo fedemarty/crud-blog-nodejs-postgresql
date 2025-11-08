@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📋 Blog API - Render Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        h1 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #666;
+            font-size: 1.1em;
+        }
+        
+        .url-info {
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-family: 'Courier New', monospace;
+            color: #333;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #667eea;
+            margin: 10px 0;
+        }
+        
+        .stat-label {
+            color: #666;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .loading {
+            text-align: center;
+            color: white;
+            font-size: 1.5em;
+            padding: 50px;
+        }
+        
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+        }
+        
+        .blog-card {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .blog-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        
+        .blog-title {
+            font-size: 1.3em;
+            color: #333;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .blog-meta {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: 600;
+        }
+        
+        .badge-published {
+            background: #10b981;
+            color: white;
+        }
+        
+        .badge-draft {
+            background: #f59e0b;
+            color: white;
+        }
+        
+        .badge-category {
+            background: #667eea;
+            color: white;
+        }
+        
+        .blog-description {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        .blog-id {
+            font-family: 'Courier New', monospace;
+            font-size: 0.8em;
+            color: #999;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+        
+        .blog-date {
+            color: #999;
+            font-size: 0.85em;
+        }
+        
+        .actions {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #5568d3;
+        }
+        
+        .error {
+            background: #fee;
+            color: #c00;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📋 Blog API Dashboard</h1>
+            <p class="subtitle">CRUD Blog API - DevOps Stack en Render</p>
+            <div class="url-info">
+                🌐 https://crud-blog-nodejs-postgresql.onrender.com
+            </div>
+        </header>
+        
+        <div class="stats" id="stats">
+            <div class="stat-card">
+                <div class="stat-label">Total Blogs</div>
+                <div class="stat-number" id="totalBlogs">-</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Publicados</div>
+                <div class="stat-number" id="publicados">-</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Borradores</div>
+                <div class="stat-number" id="borradores">-</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Categorías</div>
+                <div class="stat-number" id="categorias">-</div>
+            </div>
+        </div>
+        
+        <div id="loading" class="loading">
+            ⏳ Cargando blogs desde Render...
+        </div>
+        
+        <div id="error" style="display: none;" class="error"></div>
+        
+        <div id="blogGrid" class="blog-grid" style="display: none;"></div>
+    </div>
+
+    <script>
+        const API_URL = 'https://crud-blog-nodejs-postgresql.onrender.com/api/blogs?limit=1000';
+        
+        async function loadBlogs() {
+            try {
+                const response = await fetch(API_URL);
+                const data = await response.json();
+                
+                if (data.status === 'success') {
+                    displayStats(data);
+                    displayBlogs(data.data.blogs);
+                } else {
+                    showError('Error al cargar los blogs');
+                }
+            } catch (error) {
+                showError(`Error de conexión: ${error.message}`);
+            }
+        }
+        
+        function displayStats(data) {
+            const blogs = data.data.blogs;
+            const publicados = blogs.filter(b => b.published).length;
+            const categorias = new Set(blogs.map(b => b.category).filter(c => c !== null)).size;
+            
+            document.getElementById('totalBlogs').textContent = data.results;
+            document.getElementById('publicados').textContent = publicados;
+            document.getElementById('borradores').textContent = data.results - publicados;
+            document.getElementById('categorias').textContent = categorias;
+        }
+        
+        function displayBlogs(blogs) {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('blogGrid').style.display = 'grid';
+            
+            const grid = document.getElementById('blogGrid');
+            grid.innerHTML = '';
+            
+            blogs.forEach(blog => {
+                const card = document.createElement('div');
+                card.className = 'blog-card';
+                
+                const statusBadge = blog.published 
+                    ? '<span class="badge badge-published">✅ Publicado</span>'
+                    : '<span class="badge badge-draft">📝 Borrador</span>';
+                
+                const categoryBadge = blog.category 
+                    ? `<span class="badge badge-category">📂 ${blog.category}</span>`
+                    : '';
+                
+                const date = new Date(blog.createdAt).toLocaleString('es-AR');
+                
+                card.innerHTML = `
+                    <div class="blog-title">${escapeHtml(blog.title)}</div>
+                    <div class="blog-meta">
+                        ${statusBadge}
+                        ${categoryBadge}
+                    </div>
+                    <div class="blog-description">${escapeHtml(blog.description)}</div>
+                    <div class="blog-date">📅 Creado: ${date}</div>
+                    <div class="actions">
+                        <a href="${API_URL}/${blog.id}" target="_blank" class="btn btn-primary">
+                            🔍 Ver JSON
+                        </a>
+                    </div>
+                    <div class="blog-id">🆔 ${blog.id}</div>
+                `;
+                
+                grid.appendChild(card);
+            });
+        }
+        
+        function showError(message) {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('error').style.display = 'block';
+            document.getElementById('error').textContent = message;
+        }
+        
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        // Cargar blogs al inicio
+        loadBlogs();
+        
+        // Recargar cada 30 segundos
+        setInterval(loadBlogs, 30000);
+    </script>
+</body>
+</html>
