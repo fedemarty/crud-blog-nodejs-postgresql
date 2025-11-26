@@ -17,7 +17,8 @@ exports.config = {
    * Logging configuration
    */
   logging: {
-    level: 'info'
+    level: 'info',
+    filepath: process.env.NODE_ENV === 'production' ? 'stdout' : './logs/newrelic_agent.log'
   },
   /**
    * Collector configuration

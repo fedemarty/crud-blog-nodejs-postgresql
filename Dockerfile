@@ -64,6 +64,9 @@ COPY --from=builder --chown=blogapi:nodejs /app/node_modules ./node_modules
 COPY --from=builder --chown=blogapi:nodejs /app/dist ./dist
 COPY --chown=blogapi:nodejs newrelic.js ./
 
+# Crear directorio de logs con permisos para New Relic
+RUN mkdir -p /app/logs && chown -R blogapi:nodejs /app/logs
+
 # Cambiar a usuario no-root
 USER blogapi
 
