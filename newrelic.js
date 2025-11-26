@@ -14,11 +14,12 @@ exports.config = {
    */
   license_key: process.env.NEW_RELIC_LICENSE_KEY,
   /**
-   * Logging configuration
+   * Logging configuration - SOLO stdout para containers
    */
   logging: {
     level: 'info',
-    filepath: process.env.NODE_ENV === 'production' ? 'stdout' : './logs/newrelic_agent.log'
+    filepath: 'stdout',  // Siempre a stdout, no a archivo
+    enabled: true
   },
   /**
    * Collector configuration
@@ -42,14 +43,6 @@ exports.config = {
      * @env NEW_RELIC_DISTRIBUTED_TRACING_ENABLED
      */
     enabled: true
-  },
-  logging: {
-    /**
-     * Level at which to log. 'trace' is most useful to New Relic when diagnosing
-     * issues with the agent, 'info' and higher will impose the least overhead on
-     * production applications.
-     */
-    level: 'info'
   },
   /**
    * When true, all request headers except for those listed in attributes.exclude
