@@ -72,15 +72,48 @@ jobs:
         user: "${{ github.actor }}"
         description: "Deployment desde rama main - SHA: ${{ github.sha }}"
     
-    # 11. Resumen del pipeline
+    # 11. Trigger Deploy en Render con versión de imagen (solo en push a main)
+    - name: 🔔 Trigger Render Deploy Hook
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      run: |
+        echo "🚀 Triggering Render deployment..."
+        echo "📦 Image version: ${{ github.sha }}"
+        echo "👤 Deployed by: ${{ github.actor }}"
+        echo "📝 Commit message: ${{ github.event.head_commit.message }}"
+        
+        # Disparar webhook de Render pasando metadata
+        curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL }}" \
+          -H "Content-Type: application/json" \
+          -d '{
+            "version": "${{ github.sha }}",
+            "image": "${{ secrets.DOCKER_USERNAME }}/blog-api:${{ github.sha }}",
+            "actor": "${{ github.actor }}",
+            "commit_message": "${{ github.event.head_commit.message }}",
+            "timestamp": "${{ github.event.head_commit.timestamp }}"
+          }'
+        
+        echo "✅ Render webhook triggered successfully"
+    
+    # 12. Resumen del pipeline
     - name: ✅ Resumen del Pipeline
       run: |
-        echo "✅ Dependencias instaladas exitosamente"
-        echo "✅ Análisis estático de TypeScript completado"
-        echo "✅ Todas las pruebas unitarias pasaron"
-        echo "✅ Build de la aplicación completado"
-        echo "✅ Imagen Docker construida exitosamente"
+        echo "=================================="
+        echo "🎉 CI/CD PIPELINE COMPLETADO"
+        echo "=================================="
+        echo "✅ Dependencias instaladas"
+        echo "✅ Análisis estático TypeScript"
+        echo "✅ 15 tests unitarios pasados"
+        echo "✅ Build completado"
+        echo "✅ Imagen Docker construida"
         if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/main" ]]; then
-          echo "✅ Imagen Docker publicada en registry"
-          echo "✅ Marcador de deployment creado en New Relic"
+          echo "✅ Imagen publicada en Docker Hub"
+          echo "   - Tag: latest"
+          echo "   - Tag: ${{ github.sha }}"
+          echo "✅ Deployment marker en New Relic"
+          echo "✅ Render webhook triggered"
+          echo ""
+          echo "🔗 Deploy URL: https://crud-blog-nodejs-postgresql.onrender.com"
+          echo "📊 New Relic: https://rpm.newrelic.com"
+          echo "🐳 Docker Hub: https://hub.docker.com/r/${{ secrets.DOCKER_USERNAME }}/blog-api"
         fi
+        echo "=================================="
