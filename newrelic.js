@@ -28,6 +28,12 @@ exports.config = {
     await_support: false
   },
   /**
+   * Desactivar code-level metrics (requiere v8 inspector)
+   */
+  code_level_metrics: {
+    enabled: false
+  },
+  /**
    * Desactivar samplers problemáticos en containers
    */
   plugins: {
