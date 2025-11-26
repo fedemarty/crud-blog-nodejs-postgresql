@@ -75,22 +75,27 @@ jobs:
     # 11. Trigger Deploy en Render con versión de imagen (solo en push a main)
     - name: 🔔 Trigger Render Deploy Hook
       if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      env:
+        COMMIT_MSG: ${{ github.event.head_commit.message }}
       run: |
         echo "🚀 Triggering Render deployment..."
         echo "📦 Image version: ${{ github.sha }}"
         echo "👤 Deployed by: ${{ github.actor }}"
-        echo "📝 Commit message: ${{ github.event.head_commit.message }}"
+        echo "📝 Commit message: ${COMMIT_MSG}"
+        
+        # Escapar mensaje para JSON (solo primera línea para evitar problemas)
+        COMMIT_SUMMARY=$(echo "${COMMIT_MSG}" | head -n1 | sed 's/"/\\"/g' | sed "s/'/\\'/g")
         
         # Disparar webhook de Render pasando metadata
         curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL }}" \
           -H "Content-Type: application/json" \
-          -d '{
-            "version": "${{ github.sha }}",
-            "image": "${{ secrets.DOCKER_USERNAME }}/blog-api:${{ github.sha }}",
-            "actor": "${{ github.actor }}",
-            "commit_message": "${{ github.event.head_commit.message }}",
-            "timestamp": "${{ github.event.head_commit.timestamp }}"
-          }'
+          -d "{
+            \"version\": \"${{ github.sha }}\",
+            \"image\": \"${{ secrets.DOCKER_USERNAME }}/blog-api:${{ github.sha }}\",
+            \"actor\": \"${{ github.actor }}\",
+            \"commit_message\": \"${COMMIT_SUMMARY}\",
+            \"timestamp\": \"${{ github.event.head_commit.timestamp }}\"
+          }"
         
         echo "✅ Render webhook triggered successfully"
     
