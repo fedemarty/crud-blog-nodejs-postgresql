@@ -15,8 +15,18 @@ WORKDIR /app
 # Copiar solo archivos de dependencias primero (mejor cache)
 COPY package.json yarn.lock ./
 
-# Instalar dependencias con frozen-lockfile para reproducibilidad
+# Instalar TODAS las dependencias (dev + prod) para build
 RUN yarn install --frozen-lockfile --production=false
+
+# Crear una capa separada con SOLO dependencias de producción
+FROM node:20-alpine AS production-deps
+
+WORKDIR /app
+
+COPY package.json yarn.lock ./
+
+# Instalar SOLO dependencias de producción
+RUN yarn install --frozen-lockfile --production=true && yarn cache clean
 
 # ==================== ETAPA 2: BUILDER ====================
 FROM node:20-alpine AS builder
@@ -34,9 +44,6 @@ COPY src ./src
 
 # Build de TypeScript a JavaScript
 RUN yarn build
-
-# Instalar SOLO dependencias de producción para la siguiente etapa
-RUN yarn install --production --frozen-lockfile && yarn cache clean
 
 # ==================== ETAPA 3: RUNNER (PRODUCCIÓN) ====================
 FROM node:20-alpine AS runner
@@ -59,8 +66,8 @@ RUN addgroup --system --gid 1001 nodejs && \
     adduser --system --uid 1001 blogapi
 
 # Copiar solo lo necesario para producción
+COPY --from=production-deps --chown=blogapi:nodejs /app/node_modules ./node_modules
 COPY --from=builder --chown=blogapi:nodejs /app/package.json ./
-COPY --from=builder --chown=blogapi:nodejs /app/node_modules ./node_modules
 COPY --from=builder --chown=blogapi:nodejs /app/dist ./dist
 COPY --chown=blogapi:nodejs newrelic.js ./
 
