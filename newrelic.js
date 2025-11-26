@@ -22,6 +22,20 @@ exports.config = {
     enabled: true
   },
   /**
+   * Desactivar function inspector para evitar errores v8
+   */
+  feature_flag: {
+    await_support: false
+  },
+  /**
+   * Desactivar samplers problemáticos en containers
+   */
+  plugins: {
+    native_metrics: {
+      enabled: false
+    }
+  },
+  /**
    * Collector configuration
    */
   collector: {
