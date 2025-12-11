@@ -27,10 +27,20 @@ app.use(
     })
 );
 
+// Ruta de bienvenida en la raíz
+app.get("/", (req: Request, res: Response) => {
+    res.status(200).json({
+        status: "success",
+        message: "🚀 CRUD Blog API - DevOps Complete Stack",
+        author: "Federico Marty & Sebastián Aldo López"
+    });
+});
+
 app.get("/api/healthchecker", (req: Request, res: Response) => {
     res.status(200).json({
         status: "success",
-        message: "CRUD Blog API - DevOps Stack by Federico Marty and Aldo Sebastián López",
+        message: "CRUD Blog API - DevOps Stack",
+        author: "Federico Marty & Sebastián Aldo López",
         environment: process.env.NODE_ENV || "development",
         timestamp: new Date().toISOString(),
     });
